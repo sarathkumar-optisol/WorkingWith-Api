@@ -8,7 +8,7 @@ interface LoginApi {
 
     @GET("/login")
     //RequestBody
-    suspend fun validateLogin() : Response<LoginResponse>
+    suspend fun validateLogin() :   Response<LoginResponse>
 }
 
 
