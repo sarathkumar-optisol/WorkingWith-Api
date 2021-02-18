@@ -1,6 +1,7 @@
 package com.example.workingwithapi.main
 
 import com.example.workingwithapi.data.api.LoginApi
+import com.example.workingwithapi.data.api.modal.LoginRequest
 import com.example.workingwithapi.data.api.modal.LoginResponse
 import com.example.workingwithapi.util.Resource
 import java.lang.Exception
@@ -12,7 +13,7 @@ class DefaultMainRepository @Inject constructor(
 
     override suspend fun getLoginData(userName: String, password: String): Resource<LoginResponse> {
         return try {
-            val response = api.validateLogin()
+            val response = api.validateLogin(LoginRequest(userName,password))
             val result = response.body()
 
             if (response.isSuccessful && result != null){

@@ -31,24 +31,23 @@ class MainViewModel @ViewModelInject constructor(
             email : String,
             password : String
     ){
-            if (email.isEmpty() && password.isEmpty()){
-                _login.value = LoginEvent.Failure("Not a Valid Email or Password")
-            }
+//            if (email.isEmpty() && password.isEmpty()){
+//                _login.value = LoginEvent.Failure("Not a Valid Email or Password")
+//            }
 
             viewModelScope.launch(dispatchers.io) {
-                    _login.value = LoginEvent.Loading
+//                    _login.value = LoginEvent.Loading
                 when(val loginResponse = repository.getLoginData(email,password)){
-                    is Resource.Error -> _login.value = LoginEvent.Failure(loginResponse.message!!)
+                    is Resource.Error -> {
+                        _login.value = LoginEvent.Failure("Incorrect")
+                        Log.d("Logged","Incorrect")
+                    }
                     is Resource.Success -> {
                         val data = loginResponse.data!!.token
-                        //val rate = getRateForCurrency(toCurrency,rates)
                         if (data == null){
                             _login.value = LoginEvent.Failure("UnExpected Error")
                         }else{
-//                            val convertedCurrency = round(fromAmount!! * rate * 100) / 100
-//                            _conversion.value = CurrencyEvent.Success(
-//                                "$fromAmount $fromCurrency = $convertedCurrency $toCurrency"
-//                            )
+                            _login.value = LoginEvent.Success("Logged in")
                             Log.d("Logged","success")
                         }
                     }
