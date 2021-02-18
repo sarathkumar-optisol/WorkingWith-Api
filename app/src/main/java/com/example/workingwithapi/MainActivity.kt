@@ -1,5 +1,6 @@
 package com.example.workingwithapi
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,13 +30,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.btnLogin.setOnClickListener {
+        binding.btnSignin.setOnClickListener {
 
-            if(binding.etEmail.text?.isEmpty()!! || binding.etPassword.text?.isEmpty()!!){
+            if(binding.etName.text?.isEmpty()!! || binding.etPassword.text?.isEmpty()!!){
                 Toast.makeText(this,"Enter Valid email or password",Toast.LENGTH_SHORT).show()
             }else{
                 viewModel.login(
-                    binding.etEmail.text.toString(),
+                    binding.etName.text.toString(),
                     binding.etPassword.text.toString()
                 )
             }
@@ -46,11 +47,15 @@ class MainActivity : AppCompatActivity() {
             viewModel.Login.collect{ event ->
                 when(event){
                         is MainViewModel.LoginEvent.Success ->{
-                            binding.tvText.text = event.resultText
+                            //binding.tvText.text = event.resultText
+                            Toast.makeText(this@MainActivity,"Logged In",Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this@MainActivity,HomeActivity::class.java)
+                            startActivity(intent)
                             Log.d(TAG, event.resultText)
                         }
                         is MainViewModel.LoginEvent.Failure ->{
-                            binding.tvText.text = event.errorText
+                            //binding.tvText.text = event.errorText
+                            Toast.makeText(this@MainActivity,"Enter Valid Name or Password",Toast.LENGTH_SHORT).show()
                             Log.d(TAG, event.errorText)
 
                         }
