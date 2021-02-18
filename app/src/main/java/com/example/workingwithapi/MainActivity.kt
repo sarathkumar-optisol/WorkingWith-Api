@@ -5,8 +5,11 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.getSystemService
 import androidx.lifecycle.lifecycleScope
 import com.example.workingwithapi.databinding.ActivityMainBinding
 import com.example.workingwithapi.main.MainViewModel
@@ -31,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.btnSignin.setOnClickListener {
-
+                hideKeyboard(binding.btnSignin)
             if(binding.etName.text?.isEmpty()!! || binding.etPassword.text?.isEmpty()!!){
                 Toast.makeText(this,"Enter Valid email or password",Toast.LENGTH_SHORT).show()
             }else{
@@ -42,6 +45,11 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+        binding.clMainActivity.setOnClickListener {
+            hideKeyboard(binding.clMainActivity)
+        }
+
+
 
         lifecycleScope.launchWhenStarted {
             viewModel.Login.collect{ event ->
@@ -67,5 +75,10 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+    private fun hideKeyboard(view : View){
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken,0)
     }
 }
