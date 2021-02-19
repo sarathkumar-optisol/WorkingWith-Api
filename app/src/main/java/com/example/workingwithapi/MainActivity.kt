@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 
-const val TAG = "MainActivity"
+private const val TAG = "MainActivity"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity() {
                     binding.etName.text.toString(),
                     binding.etPassword.text.toString()
                 )
+
+//                viewModel.userList()
+//                Log.d("userList",viewModel.UserList.toString())
             }
 
         }
@@ -57,14 +60,19 @@ class MainActivity : AppCompatActivity() {
                         is MainViewModel.LoginEvent.Success ->{
                             //binding.tvText.text = event.resultText
                             Toast.makeText(this@MainActivity,"Logged In",Toast.LENGTH_SHORT).show()
+
+
+
+                            Log.d(TAG, event.result)
                             val intent = Intent(this@MainActivity,HomeActivity::class.java)
                             startActivity(intent)
-                            Log.d(TAG, event.resultText)
+                            finish()
+
                         }
                         is MainViewModel.LoginEvent.Failure ->{
                             //binding.tvText.text = event.errorText
-                            Toast.makeText(this@MainActivity,"Enter Valid Name or Password",Toast.LENGTH_SHORT).show()
-                            Log.d(TAG, event.errorText)
+                            Toast.makeText(this@MainActivity,"Enter Valid Name or Password failure",Toast.LENGTH_SHORT).show()
+                            Log.d(TAG, event.error)
 
                         }
                     is MainViewModel.LoginEvent.Loading -> {
