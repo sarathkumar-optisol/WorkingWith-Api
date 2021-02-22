@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.getSystemService
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.workingwithapi.databinding.ActivityMainBinding
 import com.example.workingwithapi.main.MainViewModel
@@ -17,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 
-const val TAG = "MainActivity"
+private const val TAG = "MainActivity"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -37,11 +38,14 @@ class MainActivity : AppCompatActivity() {
                 hideKeyboard(binding.btnSignin)
             if(binding.etName.text?.isEmpty()!! || binding.etPassword.text?.isEmpty()!!){
                 Toast.makeText(this,"Enter Valid email or password",Toast.LENGTH_SHORT).show()
+                binding.progressBar.isVisible = false
             }else{
                 viewModel.login(
                     binding.etName.text.toString(),
                     binding.etPassword.text.toString()
                 )
+
+
             }
 
         }
@@ -57,17 +61,24 @@ class MainActivity : AppCompatActivity() {
                         is MainViewModel.LoginEvent.Success ->{
                             //binding.tvText.text = event.resultText
                             Toast.makeText(this@MainActivity,"Logged In",Toast.LENGTH_SHORT).show()
+
+
+                            binding.progressBar.isVisible = false
+                            Log.d(TAG, event.result)
                             val intent = Intent(this@MainActivity,HomeActivity::class.java)
                             startActivity(intent)
-                            Log.d(TAG, event.resultText)
+                            finish()
+
                         }
                         is MainViewModel.LoginEvent.Failure ->{
                             //binding.tvText.text = event.errorText
-                            Toast.makeText(this@MainActivity,"Enter Valid Name or Password",Toast.LENGTH_SHORT).show()
-                            Log.d(TAG, event.errorText)
+                            binding.progressBar.isVisible = false
+                            Toast.makeText(this@MainActivity,"Enter Valid Name or Password failure",Toast.LENGTH_SHORT).show()
+                            Log.d(TAG, event.error)
 
                         }
                     is MainViewModel.LoginEvent.Loading -> {
+                        binding.progressBar.isVisible = true
 
                     }
                     else -> Unit

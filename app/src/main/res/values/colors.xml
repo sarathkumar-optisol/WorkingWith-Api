@@ -11,4 +11,5 @@
     <color name="red">#FF0000</color>
     <color name="blue">#6495ED</color>
     <color name="light_red">#ff404c</color>
+    <color name="rv_bg_color">#ECF0F1</color>
 </resources>
