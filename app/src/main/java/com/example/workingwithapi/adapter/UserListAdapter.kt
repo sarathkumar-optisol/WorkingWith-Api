@@ -1,15 +1,17 @@
 package com.example.workingwithapi.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.workingwithapi.data.api.modal.Data
 import com.example.workingwithapi.databinding.UserItemBinding
 
-class UserListAdapter : RecyclerView.Adapter<UserListAdapter.UserListViewHolder>() {
+class UserListAdapter(private val context: Context) : RecyclerView.Adapter<UserListAdapter.UserListViewHolder>() {
 
 
 
@@ -53,6 +55,8 @@ class UserListAdapter : RecyclerView.Adapter<UserListAdapter.UserListViewHolder>
             tvFirstName.text = userItem.first_name
             tvLastName.text = userItem.last_name
             tvEmail.text = userItem.email
+            Glide.with(context).load(userItem.avatar).circleCrop().into(ivAvatar)
+
         }
         Log.d("rvItems",userDataResponses.size.toString())
 

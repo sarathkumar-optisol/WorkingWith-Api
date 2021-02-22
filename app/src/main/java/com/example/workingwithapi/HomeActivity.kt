@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,12 +26,19 @@ import okhttp3.internal.notify
 import retrofit2.HttpException
 import java.io.IOException
 
+
+
+
+import dagger.hilt.EntryPoint
+
+
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
 
     private lateinit var binding : ActivityHomeBinding
     private val viewModel : MainViewModel by viewModels()
+
     private lateinit var userListAdapter: UserListAdapter
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -39,28 +48,34 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
+        binding.progressBar.isVisible = false
         viewModel.userList()
         setupRecyclerView()
 
-
         lifecycleScope.launchWhenStarted {
-
-
             viewModel.UserList.collect{ event ->
                 when(event){
                     is MainViewModel.UserListEvent.Success ->{
+                        binding.progressBar.isVisible = false
                         //binding.tvText.text = event.resultText
-                        userListAdapter.userDataResponses = listOf(event.resultText)
-
-                        Log.d("home",event.resultText.first_name)
+                        //Toast.makeText(this@MainActivity,"Logged In",Toast.LENGTH_SHORT).show()
+                       userListAdapter.userDataResponses  = event.resultText
+                        Log.d("Home",event.toString())
 
 
                     }
                     is MainViewModel.UserListEvent.Failure ->{
+                        binding.progressBar.isVisible = false
+                        //binding.tvText.text = event.errorText
+//                        Toast.makeText(this@MainActivity,"Enter Valid Name or Password failure",Toast.LENGTH_SHORT).show()
+//                        Log.d(TAG, event.error)
 
                     }
+                    is MainViewModel.UserListEvent.Loading -> {
 
+                        binding.progressBar.isVisible = true
+
+                    }
                     else -> Unit
                 }
 
@@ -71,11 +86,17 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+
     private fun setupRecyclerView() = binding.rvUserList.apply{
 
-            userListAdapter = UserListAdapter()
+        userListAdapter = UserListAdapter(context)
         adapter = userListAdapter
         layoutManager = LinearLayoutManager(this@HomeActivity)
 
     }
+
+
+
+
+
 }
