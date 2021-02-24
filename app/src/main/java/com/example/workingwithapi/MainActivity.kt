@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                         is MainViewModel.LoginEvent.Failure ->{
                             //binding.tvText.text = event.errorText
                             binding.progressBar.isVisible = false
-                            Toast.makeText(this@MainActivity,"Enter Valid Name or Password failure",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MainActivity,"No Network",Toast.LENGTH_SHORT).show()
                             Log.d(TAG, event.error)
 
                         }

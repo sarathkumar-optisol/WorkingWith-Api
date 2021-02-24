@@ -10,6 +10,6 @@ interface MainRepository {
         suspend fun getLoginData(userName : String , password : String) : Resource<LoginResponse>
 
 
-        suspend fun getUserDataList() : Resource<UserListResponse>
+        suspend fun getUserDataList(pageNumber : Int) : Resource<UserListResponse>
 
 }

@@ -15,6 +15,8 @@ class DefaultMainRepository @Inject constructor(
     private val api : LoginApi
 ) : MainRepository{
 
+
+
     override suspend fun getLoginData(userName: String, password: String): Resource<LoginResponse> {
         return try {
             val response = api.validateLogin(LoginRequest(userName,password))
@@ -32,12 +34,12 @@ class DefaultMainRepository @Inject constructor(
 
 
 
-
-    override suspend fun getUserDataList(): Resource<UserListResponse> {
+    override suspend fun getUserDataList(pageNumber: Int): Resource<UserListResponse> {
         return try {
-            val response = api.getUserDataList("2")
+            val response = api.getUserDataList(pageNumber)
             Log.d("DefaultViewModel" , response.body().toString())
             val result = response.body()
+
 
             if (response.isSuccessful && result != null){
                 Resource.Success(result)

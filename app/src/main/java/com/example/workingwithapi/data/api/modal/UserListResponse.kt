@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class UserListResponse(
     @SerializedName("data")
-    val data: List<Data>,
+    val data: MutableList<Data>,
     @SerializedName("page")
     val page: Int,
     @SerializedName("per_page")

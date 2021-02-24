@@ -31,7 +31,7 @@ class UserListAdapter(private val context: Context) : RecyclerView.Adapter<UserL
     }
 
     val differ = AsyncListDiffer(this,differCallback)
-    var userDataResponses : List<Data>
+    var userDataResponses : MutableList<Data>
 
 
 
