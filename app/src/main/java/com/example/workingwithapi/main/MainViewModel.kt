@@ -28,7 +28,8 @@ class MainViewModel @ViewModelInject constructor(
     private val dispatchers : DispatcherProvider
 ) : ViewModel() {
 
-
+    lateinit var newList : MutableList<Data>
+    lateinit var oldList : MutableList<Data>
 
     sealed class LoginEvent {
         class Success(val result: String) : LoginEvent()
@@ -102,47 +103,24 @@ class MainViewModel @ViewModelInject constructor(
 
                         if (pageNumber==1) {
                             _userList.value = UserListEvent.Success(userlistResponse.data.data)
+                            newList = userlistResponse.data.data
 
                             Log.d("page", "${userlistResponse.data.data} in second api call if")
                         }else{
-                            val new = _userList
+                            oldList = userlistResponse.data.data
+                            oldList.addAll(0,newList)
 
-                            _userList.value = UserListEvent.Success(userlistResponse.data.data)
+                            _userList.value = UserListEvent.Success(oldList)
                             Log.d("page", "${userlistResponse.data.data} in second api call else")
 
                         }
-
-
-
-
-
-
-//                        if (pageNumber != 1) {
-//                            repository.getUserDataList(pageNumber)
-//                            _userList.value = UserListEvent.Success(userlistResponse.data.data)
-//                            val oldData = userlistResponse.data.data
-//                            val newData = userlistResponse.data.data
-//                            oldData.addAll(newData)
-//                        }
-//                        Log.d("page",pageNumber.toString())
-//                        val oldData = userlistResponse.data.data
-//                        repository.getUserDataList(pageNumber)
-//                        val newData  = userlistResponse.data.data
-//                        Log.d("page",newData.toString())
-//
-//                        Log.d("page","${oldData.size} Size")
-//                        Log.d("page","${newData.size} Size")
-//                        oldData.addAll(newData)
-//                        Log.d("Logged","success")
                         }
 
                     }
 
-
                 }
 
             }
-
 
         }
 
