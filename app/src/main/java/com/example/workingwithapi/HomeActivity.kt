@@ -33,6 +33,7 @@ import java.io.IOException
 
 
 import dagger.hilt.EntryPoint
+import java.util.Collections.addAll
 
 
 @AndroidEntryPoint
@@ -43,6 +44,11 @@ class HomeActivity : AppCompatActivity() {
     private val viewModel : MainViewModel by viewModels()
 
     lateinit var userListAdapter: UserListAdapter
+
+    lateinit var new : MutableList<Data>
+    lateinit var old : MutableList<Data>
+
+
 
 
     var pagenumber = 1
@@ -70,11 +76,30 @@ class HomeActivity : AppCompatActivity() {
                 when(event){
                     is MainViewModel.UserListEvent.Success ->{
                         binding.progressBar.isVisible = false
-                       userListAdapter.userDataResponses  = event.resultText
 
+                        if (pagenumber==1) {
+                            //userListAdapter.userDataResponses = event.resultText
+                            userListAdapter.userDataResponses = event.resultText
+                        old = userListAdapter.userDataResponses
+                        //pagenumber++
+                        Log.d("page", "$pagenumber in sucess")
+
+                            }else{
+                            new = event.resultText
+                            new.addAll(0,old)
+                            userListAdapter.differ.submitList(new)
+
+                            //userListAdapter.differ.submitList(new)
+
+
+
+
+//                            old.addAll(new) = userListAdapter.userDataResponses
+
+}
                         //userListAdapter.differ.submitList(event.resultText.toList())
 
-
+//                        userListAdapter.differ.submitList(event.resultText)
                         Log.d("Home",event.toString())
                         Log.d("Home",pagenumber.toString())
                     }
@@ -116,14 +141,17 @@ class HomeActivity : AppCompatActivity() {
             val isNotAtBeginning = firstVisibleItemPosition >= 0
             val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
 
+            //isNotLoadingAndNotLastPage && isAtLastItem  && isTotalMoreThanVisible
 
-
-            val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem  && isTotalMoreThanVisible
-                     isScrolling
+            if (dy > 0){
+                isScrolling = true
+            }
+            val shouldPaginate =
+                    isNotLoadingAndNotLastPage && isAtLastItem  && isTotalMoreThanVisible && isScrolling
 
 
             Log.d("scrollLog isNotLoad",isNotLoadingAndNotLastPage.toString())
-            Log.d("scrollLog isNotLoad",totalItemCount.toString())
+            Log.d("scrollLog totalitem",totalItemCount.toString())
             Log.d("scrollLog firstVisible",firstVisibleItemPosition.toString())
             Log.d("scrollLog visibleItem",visibleItemCount.toString())
             Log.d("scrollLog isNotBegin",isNotAtBeginning.toString())
@@ -133,14 +161,15 @@ class HomeActivity : AppCompatActivity() {
 
 
             Log.d("scrollLog pagenumber 1",pagenumber.toString())
-            Log.d("scrollLog shouldpagi",shouldPaginate.toString())
+
 
             if(shouldPaginate) {
 
                 if (pagenumber <= pageLimit) {
                     viewModel.userList(pagenumber)
-                    isScrolling = false
                     pagenumber++
+                    isScrolling = false
+
                 }
 
 
@@ -183,3 +212,21 @@ class HomeActivity : AppCompatActivity() {
 
 
 }
+
+
+
+//working fine
+//if (pagenumber==1) {
+//    userListAdapter.userDataResponses = event.resultText
+//    old = userListAdapter.userDataResponses
+//    //pagenumber++
+//    Log.d("page", "$pagenumber in sucess")
+//
+//}else{
+//    new = event.resultText
+//    new.addAll(old)
+//    userListAdapter.userDataResponses = new
+//
+////                            old.addAll(new) = userListAdapter.userDataResponses
+//
+//}

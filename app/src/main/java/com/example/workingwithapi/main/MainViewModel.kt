@@ -45,7 +45,7 @@ class MainViewModel @ViewModelInject constructor(
     }
 
 
-    lateinit var UserData : MutableList<Data>
+
 
     private val _login = MutableStateFlow<LoginEvent>(LoginEvent.Empty)
     val Login: StateFlow<LoginEvent> = _login
@@ -99,14 +99,19 @@ class MainViewModel @ViewModelInject constructor(
                     if (data == null) {
                         _userList.value = UserListEvent.Failure("UnExpected Error")
                     } else {
-                        _userList.value = UserListEvent.Success(userlistResponse.data.data)
-                        if (pageNumber==1){
-                            Log.d("first Time cal pg ",pageNumber.toString())
-                            UserData =  userlistResponse.data.data
-                        }else{
 
-                            UserData =  userlistResponse.data.data
+                        if (pageNumber==1) {
+                            _userList.value = UserListEvent.Success(userlistResponse.data.data)
+
+                            Log.d("page", "${userlistResponse.data.data} in second api call if")
+                        }else{
+                            val new = _userList
+
+                            _userList.value = UserListEvent.Success(userlistResponse.data.data)
+                            Log.d("page", "${userlistResponse.data.data} in second api call else")
+
                         }
+
 
 
 
