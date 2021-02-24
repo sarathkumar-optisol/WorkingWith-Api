@@ -75,7 +75,7 @@ class MainViewModel @ViewModelInject constructor(
                     if (data == null) {
                         _login.value = LoginEvent.Failure("UnExpected Error")
                     } else {
-                        _login.value = LoginEvent.Success("Logged in")
+                        _login.value = LoginEvent.Success(data)
                         Log.d("MVIEWMODEL", "success")
                     }
                 }
