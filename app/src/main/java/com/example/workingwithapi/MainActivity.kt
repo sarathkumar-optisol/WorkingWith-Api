@@ -1,6 +1,8 @@
 package com.example.workingwithapi
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,22 +29,34 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private val viewModel : MainViewModel by viewModels()
 
+    lateinit var sharedPreferences: SharedPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
+
+
+
+        sharedPreferences = getSharedPreferences("token" , Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        loadSharedPreference()
 
         binding.btnSignin.setOnClickListener {
+
+            val email = binding.etName.text.toString()
+            val password = binding.etPassword.text.toString()
                 hideKeyboard(binding.btnSignin)
             if(binding.etName.text?.isEmpty()!! || binding.etPassword.text?.isEmpty()!!){
                 Toast.makeText(this,"Enter Valid email or password",Toast.LENGTH_SHORT).show()
                 binding.progressBar.isVisible = false
             }else{
-                viewModel.login(
-                    binding.etName.text.toString(),
-                    binding.etPassword.text.toString()
+                viewModel.login(email, password
                 )
 
 
@@ -65,9 +79,15 @@ class MainActivity : AppCompatActivity() {
 
                             binding.progressBar.isVisible = false
                             Log.d(TAG, event.result)
+                            editor.apply{
+                                putString("token", event.result)
+                                apply()
+                            }
+
                             val intent = Intent(this@MainActivity,HomeActivity::class.java)
                             startActivity(intent)
                             finish()
+
 
                         }
                         is MainViewModel.LoginEvent.Failure ->{
@@ -85,6 +105,15 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
+        }
+    }
+
+    fun loadSharedPreference(){
+        val token = sharedPreferences.getString("token",null)
+
+        if (token!=null){
+            val intent = Intent(this@MainActivity,HomeActivity::class.java)
+            startActivity(intent)
         }
     }
 

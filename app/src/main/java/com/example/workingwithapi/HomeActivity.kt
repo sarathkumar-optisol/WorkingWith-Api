@@ -1,13 +1,20 @@
 package com.example.workingwithapi
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +37,12 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var userListAdapter: UserListAdapter
 
+    lateinit var toggle : ActionBarDrawerToggle
+
+    lateinit var sharedPreferences : SharedPreferences
+
+
+
 
     var pagenumber = 1
     var pageLimit = 2
@@ -40,6 +53,32 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        toggle = ActionBarDrawerToggle(this,binding.drawerLayout,R.string.open,R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        sharedPreferences = getSharedPreferences("token", Context.MODE_PRIVATE)
+
+        var token = sharedPreferences.getString("token", null)
+        Log.d("token","${token.toString()}")
+
+        binding.navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.logOut -> {
+                    sharedPreferences.edit().remove("token").commit()
+                    Toast.makeText(this,"Logged Out",Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this,MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }
+            true
+        }
 
 
         binding.progressBar.isVisible = false
@@ -81,6 +120,8 @@ class HomeActivity : AppCompatActivity() {
 
 
     }
+
+
 
     var isLoading = false
     var isLastPage = false
@@ -139,6 +180,14 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)){
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
 
     private fun setupRecyclerView() = binding.rvUserList.apply{
 
@@ -151,6 +200,17 @@ class HomeActivity : AppCompatActivity() {
         Log.d("page","In Setup Recyclerview")
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        return super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.main,menu)
+        return true
+    }
+//
+//    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+//
+//        return super.onPrepareOptionsMenu(menu)
+//    }
 
 }
 
