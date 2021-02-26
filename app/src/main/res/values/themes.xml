@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.WorkingWithApi" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/red</item> <!-- to change Button color. -->
+        <item name="colorPrimary">@color/light_red</item> <!-- to change Button color. -->
         <item name="colorPrimaryVariant">@color/light_red</item> <!-- To change status bar color -->
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

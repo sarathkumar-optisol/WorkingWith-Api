@@ -12,4 +12,6 @@ interface MainRepository {
 
         suspend fun getUserDataList(pageNumber : Int) : Resource<UserListResponse>
 
+        suspend fun getSearchList(pageNumber: Int , email : String) : Resource<UserListResponse>
+
 }

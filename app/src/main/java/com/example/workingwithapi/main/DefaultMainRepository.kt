@@ -53,8 +53,26 @@ class DefaultMainRepository @Inject constructor(
 
     }
 
+    override suspend fun getSearchList(pageNumber: Int, email: String): Resource<UserListResponse> {
+        return try {
+            val response = api.getUserDataList(pageNumber)
+            Log.d("DefaultViewModel" , response.body().toString())
+            val result = response.body()
 
+
+            if (response.isSuccessful && result != null){
+                Resource.Success(result)
+            }else{
+                Resource.Error(response.message())
+            }
+
+        }catch (e : Exception){
+            Resource.Error(e.message ?: "An Error Occurred")
+        }
     }
+
+
+}
 
 
 

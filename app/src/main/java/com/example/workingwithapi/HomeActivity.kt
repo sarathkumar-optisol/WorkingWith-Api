@@ -3,6 +3,7 @@ package com.example.workingwithapi
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -20,12 +22,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workingwithapi.adapter.UserListAdapter
+import com.example.workingwithapi.data.api.modal.Data
+import com.example.workingwithapi.data.api.modal.UserListResponse
 import com.example.workingwithapi.databinding.ActivityHomeBinding
 import com.example.workingwithapi.main.MainViewModel
 import com.example.workingwithapi.others.Constants.QUERY_PAGE_SIZE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -41,11 +45,19 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var sharedPreferences : SharedPreferences
 
+    lateinit var searchList : MutableList<Data>
+
+
+
+
+
+
 
 
 
     var pagenumber = 1
     var pageLimit = 2
+    var searchPage = 1
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -54,10 +66,10 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupRecyclerView()
+        setupToolBar()
 
-        toggle = ActionBarDrawerToggle(this,binding.drawerLayout,R.string.open,R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+
 
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -86,6 +98,8 @@ class HomeActivity : AppCompatActivity() {
         setupRecyclerView()
 
 
+
+
         lifecycleScope.launchWhenStarted {
             viewModel.UserList.collect{ event ->
                 when(event){
@@ -93,11 +107,13 @@ class HomeActivity : AppCompatActivity() {
                         binding.progressBar.isVisible = false
 
                         if (pagenumber==1) {
+                            //searchList = event.resultText
                             userListAdapter.userDataResponses = event.resultText
 
                         Log.d("page", "$pagenumber in sucess")
 
                             }else {
+                            //searchList.addAll(event.resultText)
                             userListAdapter.differ.submitList(event.resultText)
                         }
                         Log.d("Home",event.toString())
@@ -119,8 +135,46 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
+        lifecycleScope.launch {
+            viewModel.SearchList.collect{ event ->
+                when(event){
+                    is MainViewModel.SearchListEvent.Success ->{
+                        binding.progressBar.isVisible = false
+
+                            userListAdapter.userDataResponses = event.resultText
+                        searchPage++
+
+                            Log.d("searchList Home", "${event.resultText} in sucess")
+
+                    }
+                    is MainViewModel.SearchListEvent.Failure ->{
+                        Toast.makeText(this@HomeActivity,"No Network",Toast.LENGTH_SHORT).show()
+                        binding.progressBar.isVisible = false
+                    }
+                    is MainViewModel.SearchListEvent.Loading -> {
+
+                        binding.progressBar.isVisible = true
+
+                    }
+                    else -> Unit
+                }
+
+            }
+        }
+
+
     }
 
+    private fun setupToolBar() {
+
+        //setSupportActionBar(binding.topAppBar)
+
+
+        toggle = ActionBarDrawerToggle(this,binding.drawerLayout,R.string.open,R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+    }
 
 
     var isLoading = false
@@ -201,9 +255,39 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+
+
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return super.onCreateOptionsMenu(menu)
+        super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.main,menu)
+
+        val searchItem =  menu?.findItem(R.id.menuSearch)
+        if (searchItem!=null){
+            val searchView = searchItem.actionView as SearchView
+            searchView.queryHint = "Search"
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    return true
+                }
+
+
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+
+                    if (p0!!.isNotEmpty()){
+                        val search = p0.toLowerCase()
+                        viewModel.searchList(searchPage, search)
+                        }else{
+                        viewModel.userList(1)
+                        pagenumber = 1
+                    }
+            return true
+                }
+
+            })
+        }
         return true
     }
 //
@@ -213,6 +297,3 @@ class HomeActivity : AppCompatActivity() {
 //    }
 
 }
-
-
-
