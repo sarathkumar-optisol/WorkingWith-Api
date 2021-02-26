@@ -2,6 +2,7 @@ package com.example.workingwithapi.main
 
 import android.os.Build
 import android.util.Log
+import android.view.SearchEvent
 import androidx.annotation.RequiresApi
 import androidx.hilt.lifecycle.ViewModelInject
 
@@ -30,6 +31,7 @@ class MainViewModel @ViewModelInject constructor(
 
     lateinit var newList : MutableList<Data>
     lateinit var oldList : MutableList<Data>
+    lateinit var search : MutableList<Data>
 
     sealed class LoginEvent {
         class Success(val result: String) : LoginEvent()
@@ -45,6 +47,13 @@ class MainViewModel @ViewModelInject constructor(
         object Empty : UserListEvent()
     }
 
+    sealed class SearchListEvent {
+        class Success(val resultText: MutableList<Data>) : SearchListEvent()
+        class Failure(val errorText: String) : SearchListEvent()
+        object Loading : SearchListEvent()
+        object Empty : SearchListEvent()
+    }
+
 
 
 
@@ -53,6 +62,9 @@ class MainViewModel @ViewModelInject constructor(
 
     private val _userList = MutableStateFlow<UserListEvent>(UserListEvent.Empty)
     val UserList: StateFlow<UserListEvent> = _userList
+
+    private val _searchList = MutableStateFlow<SearchListEvent>(SearchListEvent.Empty)
+    val SearchList: StateFlow<SearchListEvent> = _searchList
 
 
 
@@ -105,6 +117,7 @@ class MainViewModel @ViewModelInject constructor(
                             _userList.value = UserListEvent.Success(userlistResponse.data.data)
                             newList = userlistResponse.data.data
 
+
                             Log.d("page", "${userlistResponse.data.data} in second api call if")
                         }else{
                             oldList = userlistResponse.data.data
@@ -125,4 +138,55 @@ class MainViewModel @ViewModelInject constructor(
         }
 
 
+    fun searchList(searchPage: Int ,
+            email: String
+    ) {
+
+        viewModelScope.launch(dispatchers.io) {
+            _searchList.value = SearchListEvent.Loading
+            when (val searchResponse = repository.getSearchList(searchPage,email)) {
+                is Resource.Error -> {
+                    _searchList.value = SearchListEvent.Failure("Incorrect")
+                    Log.d("MVIEWMODEL", "Incorrect")
+
+                }
+                is Resource.Success -> {
+                    val data = searchResponse.data!!.data
+                    if (data == null) {
+                        _searchList.value = SearchListEvent.Failure("UnExpected Error")
+                    } else {
+
+                        if (searchPage == 1){
+                            search  = data.filter {
+                                it.email.contains(email)
+                            } as MutableList<Data>
+
+
+                        }else{
+
+
+                            search  = data.filter {
+                                it.email.contains(email)
+                            } as MutableList<Data>
+
+
+                            // code to search email on pagenumber not equal to
+
+
+                        }
+
+                        _searchList.value = SearchListEvent.Success(search)
+                        Log.d("MVIEWMODEL","$search")
+                    }
+                }
+            }
+
+        }
+
+
     }
+
+
+}
+
+
