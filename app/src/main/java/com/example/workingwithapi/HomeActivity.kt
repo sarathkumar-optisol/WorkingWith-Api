@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -27,7 +28,11 @@ import com.example.workingwithapi.data.api.modal.UserListResponse
 import com.example.workingwithapi.databinding.ActivityHomeBinding
 import com.example.workingwithapi.main.MainViewModel
 import com.example.workingwithapi.others.Constants.QUERY_PAGE_SIZE
+import com.example.workingwithapi.util.DispatcherProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -46,13 +51,6 @@ class HomeActivity : AppCompatActivity() {
     lateinit var sharedPreferences : SharedPreferences
 
     lateinit var searchList : MutableList<Data>
-
-
-
-
-
-
-
 
 
     var pagenumber = 1
@@ -141,10 +139,23 @@ class HomeActivity : AppCompatActivity() {
                     is MainViewModel.SearchListEvent.Success ->{
                         binding.progressBar.isVisible = false
 
+
+
+                        if (event.resultText.size == 0){
+                            binding.rvUserList.visibility = View.GONE
+                            binding.ivNoData.visibility = View.VISIBLE
+                            binding.tvNoData.visibility = View.VISIBLE
+                        }else{
+                            binding.rvUserList.visibility = View.VISIBLE
+                            binding.ivNoData.visibility = View.GONE
+                            binding.tvNoData.visibility = View.GONE
                             userListAdapter.userDataResponses = event.resultText
-                        searchPage++
+                            searchPage++
+                        }
+
 
                             Log.d("searchList Home", "${event.resultText} in sucess")
+                            Log.d("searchList Home", "${event.resultText.size} in sucess")
 
                     }
                     is MainViewModel.SearchListEvent.Failure ->{
@@ -267,18 +278,40 @@ class HomeActivity : AppCompatActivity() {
         if (searchItem!=null){
             val searchView = searchItem.actionView as SearchView
             searchView.queryHint = "Search"
+           // val fg = searchView.onActionViewCollapsed()
+            searchView.setOnCloseListener(object  : SearchView.OnCloseListener{
+                override fun onClose(): Boolean {
+
+                    Log.d("close","Inclose")
+                    binding.rvUserList.visibility = View.VISIBLE
+                    binding.ivNoData.visibility = View.GONE
+                    binding.tvNoData.visibility = View.GONE
+                    searchView.onActionViewCollapsed()
+
+                    return true
+                }
+
+
+            })
+
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(p0: String?): Boolean {
                     return true
                 }
 
-
-
                 override fun onQueryTextChange(p0: String?): Boolean {
 
                     if (p0!!.isNotEmpty()){
                         val search = p0.toLowerCase()
-                        viewModel.searchList(searchPage, search)
+
+
+                        if (pagenumber==1){
+                            Log.d("QueryPage","$pagenumber")
+                            viewModel.searchList(pagenumber, search)
+                        }else{
+                            viewModel.searchList(searchPage+1, search)
+                        }
+
                         }else{
                         viewModel.userList(1)
                         pagenumber = 1

@@ -17,6 +17,7 @@ import com.example.workingwithapi.data.api.modal.UserListResponse
 
 import com.example.workingwithapi.util.DispatcherProvider
 import com.example.workingwithapi.util.Resource
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -152,22 +153,24 @@ class MainViewModel @ViewModelInject constructor(
                 }
                 is Resource.Success -> {
                     val data = searchResponse.data!!.data
+
                     if (data == null) {
                         _searchList.value = SearchListEvent.Failure("UnExpected Error")
                     } else {
 
                         if (searchPage == 1){
+                            Log.d("searchpage","$searchPage")
                             search  = data.filter {
                                 it.email.contains(email)
                             } as MutableList<Data>
-
+                            Log.d("","$searchPage")
 
                         }else{
 
-
-                            search  = data.filter {
+                            search  = oldList.filter {
                                 it.email.contains(email)
                             } as MutableList<Data>
+                            Log.d("inelsedata","$search")
 
 
                             // code to search email on pagenumber not equal to

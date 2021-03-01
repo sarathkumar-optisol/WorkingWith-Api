@@ -8,6 +8,10 @@ import com.example.workingwithapi.data.api.modal.LoginResponse
 import com.example.workingwithapi.data.api.modal.UserListResponse
 
 import com.example.workingwithapi.util.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -54,7 +58,11 @@ class DefaultMainRepository @Inject constructor(
     }
 
     override suspend fun getSearchList(pageNumber: Int, email: String): Resource<UserListResponse> {
+
+
+
         return try {
+
             val response = api.getUserDataList(pageNumber)
             Log.d("DefaultViewModel" , response.body().toString())
             val result = response.body()
