@@ -174,6 +174,13 @@ class HomeActivity : AppCompatActivity() {
         }
 
 
+        binding.floatingActionButton.setOnClickListener{
+            val intent = Intent(this, TimeActivity::class.java)
+            startActivity(intent)
+//            finish()
+        }
+
+
     }
 
     private fun setupToolBar() {
