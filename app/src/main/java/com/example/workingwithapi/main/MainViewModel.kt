@@ -1,5 +1,7 @@
 package com.example.workingwithapi.main
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
 import android.view.SearchEvent
@@ -12,6 +14,7 @@ import com.example.workingwithapi.data.api.modal.Data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.workingwithapi.HomeFragment
 import com.example.workingwithapi.data.api.modal.UserListResponse
 
 
@@ -21,6 +24,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlin.reflect.KProperty
 
 const val TAG = "MainViewModel"
 
@@ -55,6 +59,15 @@ class MainViewModel @ViewModelInject constructor(
         object Empty : SearchListEvent()
     }
 
+    sealed class UserProfileEvent {
+        class Success(val resultText: Data) : UserProfileEvent()
+        class Failure(val errorText: String) : UserProfileEvent()
+        object Loading : UserProfileEvent()
+        object Empty : UserProfileEvent()
+    }
+
+
+
 
 
 
@@ -66,6 +79,10 @@ class MainViewModel @ViewModelInject constructor(
 
     private val _searchList = MutableStateFlow<SearchListEvent>(SearchListEvent.Empty)
     val SearchList: StateFlow<SearchListEvent> = _searchList
+
+
+    private val _userProfile = MutableStateFlow<UserProfileEvent>(UserProfileEvent.Empty)
+    val UserProfile: StateFlow<UserProfileEvent> = _userProfile
 
 
 
@@ -186,6 +203,36 @@ class MainViewModel @ViewModelInject constructor(
 
         }
 
+
+    }
+
+    fun UserProfile() {
+
+        viewModelScope.launch(dispatchers.io) {
+            _userProfile.value = UserProfileEvent.Loading
+            when (val userProfileResponse = repository.getUserProfile()) {
+                is Resource.Error -> {
+                    _userProfile.value = UserProfileEvent.Failure("Incorrect")
+                    Log.d("MVIEWMODEL", "Incorrect")
+
+                }
+                is Resource.Success -> {
+                    val data  = userProfileResponse.data!!.data
+                    if (data == null) {
+                        _userProfile.value = UserProfileEvent.Failure("UnExpected Error")
+                    } else {
+                        _userProfile.value = UserProfileEvent.Success(data)
+                        Log.d("MVIEWMODEL", "success")
+                    }
+                }
+            }
+
+        }
+
+
+    }
+
+    fun getSharePrefData(){
 
     }
 

@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkingWithApi">
-        <activity android:name=".TimeActivity"></activity>
+        <activity android:name=".SingleUserProfile"></activity>
+        <activity android:name=".TimeActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

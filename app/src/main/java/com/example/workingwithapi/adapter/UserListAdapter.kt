@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.workingwithapi.OnItemClickListener
 import com.example.workingwithapi.data.api.modal.Data
 import com.example.workingwithapi.databinding.UserItemBinding
 
-class UserListAdapter(private val context: Context) : RecyclerView.Adapter<UserListAdapter.UserListViewHolder>() {
+class UserListAdapter(private val context: Context , val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<UserListAdapter.UserListViewHolder>() {
 
 
 
@@ -49,9 +50,9 @@ class UserListAdapter(private val context: Context) : RecyclerView.Adapter<UserL
     override fun onBindViewHolder(holder: UserListViewHolder, position: Int) {
 
 
-
+        val userItem  = userDataResponses[position]
         holder.binding.apply {
-            val userItem  = userDataResponses[position]
+
             tvFirstName.text = userItem.first_name
             tvLastName.text = userItem.last_name
             tvEmail.text = userItem.email
@@ -60,8 +61,10 @@ class UserListAdapter(private val context: Context) : RecyclerView.Adapter<UserL
         }
         Log.d("rvItems",userDataResponses.size.toString())
 
+        holder.itemView.setOnClickListener {
+            onItemClickListener.onClick(userItem)
+        }
 
-        //code for imageview to add favorites
 
     }
 

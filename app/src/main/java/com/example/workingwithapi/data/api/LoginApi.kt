@@ -1,9 +1,7 @@
 package com.example.workingwithapi.data.api
 
-import com.example.workingwithapi.data.api.modal.LoginRequest
-import com.example.workingwithapi.data.api.modal.LoginResponse
+import com.example.workingwithapi.data.api.modal.*
 
-import com.example.workingwithapi.data.api.modal.UserListResponse
 import retrofit2.Call
 
 import retrofit2.Response
@@ -18,6 +16,9 @@ interface LoginApi {
     suspend fun getUserDataList(
             @Query("page") page : Int
     ) : Response<UserListResponse>
+
+    @GET("users/2")
+    suspend fun getUserProfile() : Response<UserProfile>
 
 
 }

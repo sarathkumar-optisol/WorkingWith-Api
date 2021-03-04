@@ -18,7 +18,7 @@ import java.util.*
 class TimeActivity : AppCompatActivity() {
 
 
-    private lateinit var binding : ActivityTimeBinding
+   private lateinit var binding : ActivityTimeBinding
 
 
     @RequiresApi(Build.VERSION_CODES.O)
