@@ -32,6 +32,7 @@ import com.example.workingwithapi.databinding.FragmentHomeBinding
 import com.example.workingwithapi.main.MainViewModel
 import com.example.workingwithapi.others.Constants.QUERY_PAGE_SIZE
 import com.example.workingwithapi.util.DispatcherProvider
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +56,7 @@ class HomeActivity : AppCompatActivity() {
 
 
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -84,12 +85,23 @@ class HomeActivity : AppCompatActivity() {
         val fragments : ArrayList<Fragment> = arrayListOf(
 
             HomeFragment(),
-            ProfileFragment(),
+                ProfileFragment(),
             SettingsFragment()
         )
 
         val adapter = ViewPagerAdapter(fragments , this)
         binding.vpHome.adapter = adapter
+
+
+        TabLayoutMediator(binding.tabLayout , binding.vpHome) { tab , position ->
+            if (position == 0){
+                tab.text = "UserList"
+            }else if (position == 1){
+                tab.text = "UserProfile"
+            }else{
+                tab.text = "Settings"
+            }
+        }.attach()
     }
 
     override fun onBackPressed() {
