@@ -207,7 +207,25 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupRecyclerView() = binding.rvUserList.apply{
 
-        userListAdapter = UserListAdapter(context)
+        userListAdapter = UserListAdapter(context , object : OnItemClickListener{
+            override fun onClick(data: Data) {
+
+                val name  = data.first_name
+                val lastname = data.last_name
+                val avatar = data.avatar
+                val email =  data.email
+                Intent(activity, SingleUserProfile::class.java).also {
+                    it.putExtra("EXTRA_NAME",name)
+                    it.putExtra("EXTRA_LASTNAME",lastname)
+                    it.putExtra("EXTRA_AVATAR",avatar)
+                    it.putExtra("EXTRA_EMAIL",email)
+                    startActivity(it)
+                }
+
+
+            }
+
+        })
         adapter = userListAdapter
         userListAdapter.notifyDataSetChanged()
         layoutManager = LinearLayoutManager(context)
@@ -348,8 +366,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
 }
-
-
 
 
 
