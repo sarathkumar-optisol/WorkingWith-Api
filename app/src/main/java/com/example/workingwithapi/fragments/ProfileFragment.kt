@@ -1,22 +1,13 @@
-package com.example.workingwithapi
+package com.example.workingwithapi.fragments
 
-import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.workingwithapi.databinding.FragmentHomeBinding
+import com.example.workingwithapi.R
 import com.example.workingwithapi.databinding.FragmentProfileBinding
-import com.example.workingwithapi.databinding.FragmentSettingsBinding
 import com.example.workingwithapi.main.MainViewModel
 import kotlinx.coroutines.flow.collect
 

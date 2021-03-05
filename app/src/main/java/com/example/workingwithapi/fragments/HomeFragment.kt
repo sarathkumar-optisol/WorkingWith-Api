@@ -1,30 +1,38 @@
-package com.example.workingwithapi
+package com.example.workingwithapi.fragments
 
-import android.content.Context
+import android.Manifest
 import android.content.Intent
-import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
-import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.workingwithapi.MediaActivity
+import com.example.workingwithapi.R
+import com.example.workingwithapi.SingleUserProfile
+import com.example.workingwithapi.TimeActivity
 import com.example.workingwithapi.adapter.UserListAdapter
 import com.example.workingwithapi.data.api.modal.Data
-import com.example.workingwithapi.databinding.ActivityHomeBinding
 import com.example.workingwithapi.databinding.FragmentHomeBinding
+import com.example.workingwithapi.listener.OnItemClickListener
 import com.example.workingwithapi.main.MainViewModel
 import com.example.workingwithapi.others.Constants
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+
+
+private const val PERMISSION_REQUEST = 10
 
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -39,6 +47,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
     lateinit var searchList: MutableList<Data>
+
+    private  var permissionrq = Manifest.permission.READ_EXTERNAL_STORAGE
 
 
     var pagenumber = 1
@@ -142,12 +152,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             }
         }
+        binding.floatingActionButton.setOnClickListener{
 
-                binding.floatingActionButton.setOnClickListener{
-                    val intent = Intent(activity, TimeActivity::class.java)
-                    startActivity(intent)
-
-
+           checkPermission(permissionrq, PERMISSION_REQUEST)
 
         }
 
@@ -207,7 +214,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupRecyclerView() = binding.rvUserList.apply{
 
-        userListAdapter = UserListAdapter(context , object : OnItemClickListener{
+        userListAdapter = UserListAdapter(context , object : OnItemClickListener {
             override fun onClick(data: Data) {
 
                 val name  = data.first_name
@@ -359,6 +366,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     }
 
+    private fun checkPermission(permission : String , requestCode : Int){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            when {
+                ContextCompat.checkSelfPermission(activity!!,permission) == PackageManager.PERMISSION_GRANTED ->{
+
+                     Toast.makeText(activity,"Permission",Toast.LENGTH_LONG).show()
+                    val intent = Intent(activity, MediaActivity::class.java)
+                    startActivity(intent)
+
+                }
+                else -> ActivityCompat.requestPermissions(activity!!, arrayOf(permission),requestCode)
+            }
+        }
+
+    }
 
 
 

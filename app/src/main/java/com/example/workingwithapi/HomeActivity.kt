@@ -1,44 +1,19 @@
 package com.example.workingwithapi
 
-import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.widget.SearchView
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.workingwithapi.adapter.UserListAdapter
 import com.example.workingwithapi.adapter.ViewPagerAdapter
-import com.example.workingwithapi.data.api.modal.Data
-import com.example.workingwithapi.data.api.modal.UserListResponse
 import com.example.workingwithapi.databinding.ActivityHomeBinding
-import com.example.workingwithapi.databinding.FragmentHomeBinding
-import com.example.workingwithapi.main.MainViewModel
-import com.example.workingwithapi.others.Constants.QUERY_PAGE_SIZE
-import com.example.workingwithapi.util.DispatcherProvider
+import com.example.workingwithapi.fragments.HomeFragment
+import com.example.workingwithapi.fragments.ProfileFragment
+import com.example.workingwithapi.fragments.SettingsFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint

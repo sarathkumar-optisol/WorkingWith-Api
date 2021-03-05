@@ -1,30 +1,20 @@
 package com.example.workingwithapi.main
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.os.Build
 import android.util.Log
-import android.view.SearchEvent
-import androidx.annotation.RequiresApi
 import androidx.hilt.lifecycle.ViewModelInject
 
-import androidx.lifecycle.*
 import com.example.workingwithapi.data.api.modal.Data
 
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.workingwithapi.HomeFragment
-import com.example.workingwithapi.data.api.modal.UserListResponse
 
 
 import com.example.workingwithapi.util.DispatcherProvider
 import com.example.workingwithapi.util.Resource
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlin.reflect.KProperty
 
 const val TAG = "MainViewModel"
 
@@ -232,9 +222,6 @@ class MainViewModel @ViewModelInject constructor(
 
     }
 
-    fun getSharePrefData(){
-
-    }
 
 
 }
