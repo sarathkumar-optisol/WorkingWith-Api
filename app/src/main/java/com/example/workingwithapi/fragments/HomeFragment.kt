@@ -18,10 +18,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.workingwithapi.MediaActivity
-import com.example.workingwithapi.R
-import com.example.workingwithapi.SingleUserProfile
-import com.example.workingwithapi.TimeActivity
+import com.example.workingwithapi.*
 import com.example.workingwithapi.adapter.UserListAdapter
 import com.example.workingwithapi.data.api.modal.Data
 import com.example.workingwithapi.databinding.FragmentHomeBinding
@@ -49,6 +46,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     lateinit var searchList: MutableList<Data>
 
     private  var permissionrq = Manifest.permission.READ_EXTERNAL_STORAGE
+
+    private var contactPermission = Manifest.permission.READ_CONTACTS
 
 
     var pagenumber = 1
@@ -154,7 +153,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         binding.floatingActionButton.setOnClickListener{
 
-           checkPermission(permissionrq, PERMISSION_REQUEST)
+           //checkPermission(permissionrq, PERMISSION_REQUEST)
+            checkPermission(contactPermission, PERMISSION_REQUEST)
 
         }
 
@@ -373,7 +373,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 ContextCompat.checkSelfPermission(activity!!,permission) == PackageManager.PERMISSION_GRANTED ->{
 
                      Toast.makeText(activity,"Permission",Toast.LENGTH_LONG).show()
-                    val intent = Intent(activity, MediaActivity::class.java)
+                    val intent = Intent(activity, ContactListActivity::class.java)
                     startActivity(intent)
 
                 }

@@ -3,18 +3,20 @@
     package="com.example.workingwithapi">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name=".WorkingWithApiApplication"
-        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkingWithApi">
-        <activity android:name=".FullScreenImageActivity"></activity>
+        <activity android:name=".ContactListActivity"></activity>
+        <activity android:name=".FullScreenImageActivity" />
         <activity android:name=".MediaActivity" />
         <activity android:name=".SingleUserProfile" />
         <activity android:name=".TimeActivity" />
