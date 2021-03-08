@@ -32,7 +32,7 @@ class VideoListAdapter(private val context: Context, private val videoList : Arr
         val currentVideo = videoList[position]
         Glide.with(context).load(currentVideo.videoPath).centerCrop().into(holder.video)
 
-        Toast.makeText(context,"${videoList.size}", Toast.LENGTH_LONG).show()
+        //Toast.makeText(context,"${videoList.size}", Toast.LENGTH_LONG).show()
         holder.itemView.setOnClickListener {
             onvideoClickListener.onClick(currentVideo)
         }

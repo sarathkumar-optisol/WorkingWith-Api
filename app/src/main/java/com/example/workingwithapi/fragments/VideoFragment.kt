@@ -86,7 +86,7 @@ class VideoFragment : Fragment(R.layout.fragment_video) {
                 storageVideo.videoPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 storageVideo.videoName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
                 video.add(storageVideo)
-                Log.d("images","$video")
+                //Log.d("images","$video")
             }while (cursor.moveToNext())
             cursor.close()
 

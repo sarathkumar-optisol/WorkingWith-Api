@@ -82,7 +82,7 @@ class ImageFragment : Fragment(R.layout.fragment_image) {
                 storageImage.imagePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
                 storageImage.imageName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
                 images.add(storageImage)
-                Log.d("images","$images")
+                //Log.d("images","$images")
             }while (cursor.moveToNext())
             cursor.close()
 

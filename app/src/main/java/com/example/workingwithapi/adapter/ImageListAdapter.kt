@@ -33,7 +33,7 @@ class ImageListAdapter(private val context: Context , private val imagesList : A
         val currentImage = imagesList[position]
         Glide.with(context).load(currentImage.imagePath).centerCrop().into(holder.image)
 
-        Toast.makeText(context,"${imagesList.size}",Toast.LENGTH_LONG).show()
+        //Toast.makeText(context,"${imagesList.size}",Toast.LENGTH_LONG).show()
         holder.itemView.setOnClickListener {
             onImageClickListener.onClick(currentImage)
         }
