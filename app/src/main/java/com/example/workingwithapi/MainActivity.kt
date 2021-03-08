@@ -2,6 +2,7 @@ package com.example.workingwithapi
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity() {
     private val viewModel : MainViewModel by viewModels()
 
     lateinit var sharedPreferences: SharedPreferences
+
+    private var receiver : AirplaneModeChangedReceiver = AirplaneModeChangedReceiver()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +68,10 @@ class MainActivity : AppCompatActivity() {
         }
         binding.clMainActivity.setOnClickListener {
             hideKeyboard(binding.clMainActivity)
+        }
+
+        IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED).also {
+            registerReceiver(receiver,it)
         }
 
 
@@ -121,5 +128,10 @@ class MainActivity : AppCompatActivity() {
     private fun hideKeyboard(view : View){
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken,0)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(receiver)
     }
 }
