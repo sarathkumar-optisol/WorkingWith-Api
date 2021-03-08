@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.GridLayoutManager
@@ -81,13 +82,24 @@ class FileFragment : Fragment(R.layout.fragment_file) {
 
 
 
+
+
+
         val file = ArrayList<StorageFile>()
 
         val allfileuri = MediaStore.Files.getContentUri("external")
 
-        val projection = arrayOf(MediaStore.Files.FileColumns.DATA,MediaStore.Files.FileColumns.DISPLAY_NAME)
+        val projection = arrayOf(MediaStore.Files.FileColumns.DATA ,MediaStore.Files.FileColumns.DISPLAY_NAME)
 
-        val cursor = activity!!.contentResolver.query(allfileuri,projection,null,null,null)
+        var selectionMimeType = MediaStore.Files.FileColumns.MIME_TYPE + "=?"
+
+        var mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("pdf")
+
+        var selectionArgsPdf = arrayOf(mimeType)
+
+
+
+        val cursor = activity!!.contentResolver.query(allfileuri,projection,selectionMimeType,selectionArgsPdf,null)
 
 
         try {
