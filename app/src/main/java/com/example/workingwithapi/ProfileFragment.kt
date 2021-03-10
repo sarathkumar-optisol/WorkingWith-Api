@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.example.workingwithapi.customDialogue.CustomDialogueFragment
 import com.example.workingwithapi.databinding.FragmentHomeBinding
 import com.example.workingwithapi.databinding.FragmentProfileBinding
 import com.example.workingwithapi.databinding.FragmentSettingsBinding
@@ -28,12 +29,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var viewModel: MainViewModel
 
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         viewModel = activity?.run {
             ViewModelProviders.of(this)[MainViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
+
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,6 +53,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
 
         viewModel.UserProfile()
+
+        binding.ivedit.setOnClickListener{
+            val dialogueFragment = CustomDialogueFragment()
+
+            dialogueFragment.show(activity!!.supportFragmentManager,"CustomDialogueFragment")
+
+        }
 
 
 
