@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkingWithApi">
-        <activity android:name=".customDialogue.CustomDialogue"></activity>
+        <activity android:name=".AlertDialogue"></activity>
+        <activity android:name=".customDialogue.CustomDialogue" />
         <activity android:name=".SingleUserProfile" />
         <activity android:name=".TimeActivity" />
         <activity android:name=".HomeActivity" />

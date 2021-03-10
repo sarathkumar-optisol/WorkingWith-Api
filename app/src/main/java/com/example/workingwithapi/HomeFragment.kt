@@ -144,7 +144,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
                 binding.floatingActionButton.setOnClickListener{
-                    val intent = Intent(activity, TimeActivity::class.java)
+                    val intent = Intent(activity, AlertDialogue::class.java)
                     startActivity(intent)
 
 
