@@ -1,17 +1,13 @@
 package com.example.workingwithapi
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
-import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
@@ -19,10 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workingwithapi.adapter.UserListAdapter
 import com.example.workingwithapi.data.api.modal.Data
-import com.example.workingwithapi.databinding.ActivityHomeBinding
 import com.example.workingwithapi.databinding.FragmentHomeBinding
 import com.example.workingwithapi.main.MainViewModel
 import com.example.workingwithapi.others.Constants
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -144,8 +140,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
                 binding.floatingActionButton.setOnClickListener{
-                    val intent = Intent(activity, AlertDialogue::class.java)
-                    startActivity(intent)
+                    AddAccountItemBottomSheet(context!!,
+                        object : AddBottomDialogueListener {
+                            override fun onAddButtonClicked(text: String) {
+                                Toast.makeText(context,text,Toast.LENGTH_LONG).show()
+                            }
+                        }).show(activity!!.supportFragmentManager,"BottomSheetDialog")
 
 
 
