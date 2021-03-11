@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -40,12 +41,19 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
 
-
+        val animi = AnimationUtils.loadAnimation(this,R.anim.animation)
 
         sharedPreferences = getSharedPreferences("token" , Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
         loadSharedPreference()
+
+//        binding.etName.startAnimation(animi)
+//        binding.etPassword.startAnimation(animi)
+//        binding.btnSignin.startAnimation(animi)
+        binding.clMainActivity.startAnimation(animi)
+
+
 
         binding.btnSignin.setOnClickListener {
 

@@ -1,23 +1,19 @@
 package com.example.workingwithapi
 
-import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 import com.bumptech.glide.Glide
-import com.example.workingwithapi.customDialogue.CustomDialogueFragment
-import com.example.workingwithapi.databinding.FragmentHomeBinding
 import com.example.workingwithapi.databinding.FragmentProfileBinding
-import com.example.workingwithapi.databinding.FragmentSettingsBinding
 import com.example.workingwithapi.main.MainViewModel
 import kotlinx.coroutines.flow.collect
 
@@ -52,12 +48,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
 
 
+
         viewModel.UserProfile()
 
-        binding.ivedit.setOnClickListener{
-            val dialogueFragment = CustomDialogueFragment()
+        val animi = AnimationUtils.loadAnimation(context,R.anim.animation)
 
-            dialogueFragment.show(activity!!.supportFragmentManager,"CustomDialogueFragment")
+
+        binding.ivUserProfile.startAnimation(animi)
+
+
+
+        binding.ivedit.setOnClickListener{
+         showDialogue()
+
 
         }
 
@@ -94,5 +97,33 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
 
+    override fun onResume() {
+        super.onResume()
+
+        val animi = AnimationUtils.loadAnimation(context,R.anim.animation)
+
+        //Toast.makeText(context,"OnResume",Toast.LENGTH_LONG).show()
+
+        binding.profileLayout.startAnimation(animi)
     }
+
+    private fun showDialogue() {
+        val dialog = MaterialDialog(activity!!)
+                .customView(R.layout.activity_custom_dialogue)
+
+
+
+        dialog.findViewById<Button>(R.id.btnCancel).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.findViewById<Button>(R.id.btnSubmit).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+
+    }
+
+
+}
 

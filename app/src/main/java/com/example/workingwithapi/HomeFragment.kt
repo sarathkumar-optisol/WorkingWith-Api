@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.animation.AnimationUtils
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -50,6 +51,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onCreate(savedInstanceState)
 
 
+
+
         viewModel = activity?.run {
             ViewModelProviders.of(this)[MainViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
@@ -57,6 +60,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         binding = FragmentHomeBinding.bind(view)
 
@@ -66,6 +70,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
         setupRecyclerView()
+
+
+
+
+        //binding.drawerLayout.startAnimation(animi)
+
+
+
+        //binding.rvUserList.startLayoutAnimation()
         //setupToolBar()
 
 
@@ -144,6 +157,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
                 binding.floatingActionButton.setOnClickListener{
+
                     val intent = Intent(activity, AlertDialogue::class.java)
                     startActivity(intent)
 
@@ -192,6 +206,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
     }
+
+
+    override fun onResume() {
+        super.onResume()
+
+        val animi = AnimationUtils.loadAnimation(context,R.anim.animation)
+
+        //Toast.makeText(context,"OnResume",Toast.LENGTH_LONG).show()
+
+        binding.drawerLayout.startAnimation(animi)
+    }
+
+
+
 //
 //        private fun setupToolBar() {
 //
