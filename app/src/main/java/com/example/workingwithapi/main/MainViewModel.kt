@@ -232,9 +232,7 @@ class MainViewModel @ViewModelInject constructor(
 
     }
 
-    fun getSharePrefData(){
 
-    }
 
 
 }
