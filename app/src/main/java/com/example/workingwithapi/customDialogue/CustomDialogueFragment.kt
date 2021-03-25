@@ -11,6 +11,9 @@ import com.example.workingwithapi.R
 import com.example.workingwithapi.databinding.ActivityCustomDialogueBinding
 import com.example.workingwithapi.databinding.FragmentProfileBinding
 
+/**
+ * custom dialogue
+ */
 class CustomDialogueFragment  : DialogFragment() {
 
     lateinit var binding: ActivityCustomDialogueBinding

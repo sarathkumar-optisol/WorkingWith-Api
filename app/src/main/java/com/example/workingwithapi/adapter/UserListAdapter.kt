@@ -12,10 +12,11 @@ import com.example.workingwithapi.OnItemClickListener
 import com.example.workingwithapi.data.api.modal.Data
 import com.example.workingwithapi.databinding.UserItemBinding
 
+
+/**
+ * adpapter for the userList in a recycler view
+ */
 class UserListAdapter(private val context: Context , val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<UserListAdapter.UserListViewHolder>() {
-
-
-
 
 
     inner class UserListViewHolder(val binding: UserItemBinding) : RecyclerView.ViewHolder(binding.root)

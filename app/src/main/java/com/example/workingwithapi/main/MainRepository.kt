@@ -7,10 +7,13 @@ import com.example.workingwithapi.data.api.modal.UserListResponse
 import com.example.workingwithapi.data.api.modal.UserProfile
 import com.example.workingwithapi.util.Resource
 
+/**
+ * interface that triggers all the methods
+ */
+
 interface MainRepository {
 
         suspend fun getLoginData(userName : String , password : String) : Resource<LoginResponse>
-
 
         suspend fun getUserDataList(pageNumber : Int) : Resource<UserListResponse>
 

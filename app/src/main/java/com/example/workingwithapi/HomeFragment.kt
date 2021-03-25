@@ -61,14 +61,28 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding = FragmentHomeBinding.bind(view)
 
 
+        /**
+         * setting progressbar visibility status
+         */
         binding.progressBar.isVisible = false
+
+        /**
+         * api call to get userList
+         */
         viewModel.userList(pagenumber)
 
 
+        /**
+         * setting recyclerView
+         */
         setupRecyclerView()
         //setupToolBar()
 
 
+
+        /**
+         * collecting the data from UserList StateFlow
+         */
                 lifecycleScope.launchWhenStarted {
             viewModel.UserList.collect{ event ->
                 when(event){
@@ -102,6 +116,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             }
         }
+
+        /**
+         * collecting the data from SearchList StateFlow
+         */
 
                 lifecycleScope.launch {
             viewModel.SearchList.collect{ event ->
@@ -143,6 +161,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
 
+        /**
+         * floating action button
+         */
                 binding.floatingActionButton.setOnClickListener{
                     val intent = Intent(activity, TimeActivity::class.java)
                     startActivity(intent)
@@ -150,6 +171,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
         }
+        /**
+         * collecting the data from SearchList StateFlow
+         */
 
                 lifecycleScope.launch {
             viewModel.SearchList.collect{ event ->
@@ -204,6 +228,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 //
 //    }
 
+    /**
+     * recyclerView function definition
+     */
 
     private fun setupRecyclerView() = binding.rvUserList.apply{
 
@@ -239,6 +266,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     var isLastPage = false
     var isScrolling = false
 
+
+    /**
+     * scroll listener used here for pagination
+     */
 
         private val scrollListener = object : RecyclerView.OnScrollListener(){
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -302,7 +333,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
 
-
+    /**
+     * search items in the recycler view
+     */
 
     override fun onCreateOptionsMenu(menu: Menu , menuInflater : MenuInflater) {
         if (menu != null) {
@@ -328,6 +361,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
             })
+
 
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                 override fun onQueryTextSubmit(p0: String?): Boolean {

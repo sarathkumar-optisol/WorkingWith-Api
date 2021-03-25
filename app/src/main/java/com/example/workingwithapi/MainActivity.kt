@@ -41,12 +41,17 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
+        /**
+         * sharedPreference to check user token
+         */
         sharedPreferences = getSharedPreferences("token" , Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
         loadSharedPreference()
 
+        /**
+         * signin button
+         */
         binding.btnSignin.setOnClickListener {
 
             val email = binding.etName.text.toString()
@@ -63,10 +68,18 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
+        /**
+         * hide keyboard when user clicks outside
+         */
         binding.clMainActivity.setOnClickListener {
             hideKeyboard(binding.clMainActivity)
         }
 
+
+        /**
+         * collect data from the Login statefloe
+         */
 
 
         lifecycleScope.launchWhenStarted {
@@ -108,6 +121,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * funtion definiton of sharedPreference
+     */
+
     fun loadSharedPreference(){
         val token = sharedPreferences.getString("token",null)
 
@@ -117,6 +134,11 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
+
+
+    /**
+     * function definition of hideKeyboard
+     */
 
     private fun hideKeyboard(view : View){
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager

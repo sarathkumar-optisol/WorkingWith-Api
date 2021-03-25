@@ -12,6 +12,12 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
+
+/**
+ * inherits from the
+ * @see MainRepository
+ * all functions must be override
+ */
 class DefaultMainRepository @Inject constructor(
     private val api : LoginApi
 ) : MainRepository{

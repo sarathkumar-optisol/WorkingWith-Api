@@ -30,6 +30,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
 
 
+        /**
+         * logout functionality and clears user token
+         */
         binding.btnLogOut.setOnClickListener {
             sharedPreference.edit().remove("token").commit()
             val intent = Intent(activity,MainActivity::class.java)

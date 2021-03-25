@@ -7,6 +7,10 @@ import com.bumptech.glide.Glide
 import com.example.workingwithapi.databinding.ActivityHomeBinding
 import com.example.workingwithapi.databinding.ActivitySingleUserProfileBinding
 
+
+/**
+ * single user profile class to show about user
+ */
 class SingleUserProfile : AppCompatActivity() {
 
     private lateinit var binding : ActivitySingleUserProfileBinding

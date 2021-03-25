@@ -16,6 +16,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
+
+/**
+ * dependency injection
+ */
 @Module
 @InstallIn(ApplicationComponent::class)
 object AppModule {

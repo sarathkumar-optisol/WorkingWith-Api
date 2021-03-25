@@ -58,6 +58,10 @@ class HomeActivity : AppCompatActivity() {
 
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+
+        /**
+         * binding the layout
+         */
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -82,6 +86,9 @@ class HomeActivity : AppCompatActivity() {
 //        }
 
 
+        /**
+         * list of fragments
+         */
         val fragments : ArrayList<Fragment> = arrayListOf(
 
             HomeFragment(),
@@ -89,10 +96,17 @@ class HomeActivity : AppCompatActivity() {
             SettingsFragment()
         )
 
+        /**
+         * setting adapter
+         */
         val adapter = ViewPagerAdapter(fragments , this)
         binding.vpHome.adapter = adapter
 
 
+
+        /**
+         * tabLayout
+         */
         TabLayoutMediator(binding.tabLayout , binding.vpHome) { tab , position ->
             if (position == 0){
                 tab.text = "UserList"
@@ -104,6 +118,10 @@ class HomeActivity : AppCompatActivity() {
         }.attach()
     }
 
+
+    /**
+     * handle backPress
+     */
     override fun onBackPressed() {
         if (binding.vpHome.currentItem == 0){
             super.onBackPressed()

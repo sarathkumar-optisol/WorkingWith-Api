@@ -49,6 +49,10 @@ class TimeActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * extension function from a string to date
+     */
+
     fun String.toDate(dateFormat: String = "yyyy-MM-dd HH:mm:ss", timeZone: TimeZone = TimeZone.getTimeZone("Pacific/Auckland")): Date {
         val parser = SimpleDateFormat(dateFormat, Locale.getDefault())
         parser.timeZone = timeZone
@@ -56,6 +60,11 @@ class TimeActivity : AppCompatActivity() {
 
         return parser.parse(this)
     }
+
+
+    /**
+     * extension function from a Date to formatTo
+     */
 
     fun Date.formatTo(dateFormat: String, timeZone: TimeZone = TimeZone.getTimeZone("Pacific/Auckland")): String {
         val formatter = SimpleDateFormat(dateFormat, Locale.getDefault())

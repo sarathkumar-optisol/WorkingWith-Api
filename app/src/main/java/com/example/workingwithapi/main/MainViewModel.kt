@@ -38,6 +38,9 @@ class MainViewModel @ViewModelInject constructor(
     lateinit var oldList : MutableList<Data>
     lateinit var search : MutableList<Data>
 
+    /**
+     * used at the time of login whether login is success or not
+     */
     sealed class LoginEvent {
         class Success(val result: String) : LoginEvent()
         class Failure(val error: String) : LoginEvent()
@@ -45,6 +48,9 @@ class MainViewModel @ViewModelInject constructor(
         object Empty : LoginEvent()
     }
 
+    /**
+     * handle userList response
+     */
     sealed class UserListEvent {
         class Success(val resultText: MutableList<Data>) : UserListEvent()
         class Failure(val errorText: String) : UserListEvent()
@@ -71,6 +77,9 @@ class MainViewModel @ViewModelInject constructor(
 
 
 
+    /**
+     * stateflow for login
+     */
     private val _login = MutableStateFlow<LoginEvent>(LoginEvent.Empty)
     val Login: StateFlow<LoginEvent> = _login
 
@@ -87,10 +96,21 @@ class MainViewModel @ViewModelInject constructor(
 
 
 
+    /**
+     * login function definition
+     */
     fun login(
             email: String,
             password: String
     ) {
+
+        /**
+         * checks user login with
+         * @param email
+         * @param password
+         */
+
+
 
         viewModelScope.launch(dispatchers.io) {
             _login.value = LoginEvent.Loading
@@ -116,7 +136,15 @@ class MainViewModel @ViewModelInject constructor(
 
     }
 
+    /**
+     * userList function definition
+     */
     fun userList(pageNumber : Int) {
+
+        /**
+         * getting userList for the
+         * @param pageNumber
+         */
 
         viewModelScope.launch(dispatchers.io) {
             _userList.value = UserListEvent.Loading

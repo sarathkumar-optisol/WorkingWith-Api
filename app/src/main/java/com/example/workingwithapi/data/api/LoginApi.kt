@@ -7,6 +7,11 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
+
+/**
+ * making api calls
+ * having endpoints
+ */
 interface LoginApi {
 
     @POST("login")

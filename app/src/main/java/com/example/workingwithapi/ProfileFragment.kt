@@ -48,11 +48,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
 
 
+        /**
+         * binding layout to the fragment
+         */
         binding = FragmentProfileBinding.bind(view)
 
 
 
+        /**
+         * getting data from api of user profile
+         */
         viewModel.UserProfile()
+
 
         binding.ivedit.setOnClickListener{
             val dialogueFragment = CustomDialogueFragment()
@@ -62,6 +69,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
 
+        /**
+         * collection data from UserProfile stateflow
+         */
 
         lifecycleScope.launchWhenStarted {
             viewModel.UserProfile.collect{ event ->
