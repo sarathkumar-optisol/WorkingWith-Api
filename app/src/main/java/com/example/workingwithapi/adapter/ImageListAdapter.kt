@@ -1,7 +1,12 @@
 package com.example.workingwithapi.adapter
 
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +19,10 @@ import com.example.workingwithapi.R
 import com.example.workingwithapi.data.api.modal.StorageImage
 import com.example.workingwithapi.listener.OnImageClickListener
 import com.example.workingwithapi.listener.OnItemClickListener
+import java.io.File
+import java.io.OutputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ImageListAdapter(private val context: Context , private val imagesList : ArrayList<StorageImage>, val onImageClickListener: OnImageClickListener)  : RecyclerView.Adapter<ImageListAdapter.ImageViewHolder>(){
     inner class ImageViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -36,6 +45,7 @@ class ImageListAdapter(private val context: Context , private val imagesList : A
         //Toast.makeText(context,"${imagesList.size}",Toast.LENGTH_LONG).show()
         holder.itemView.setOnClickListener {
             onImageClickListener.onClick(currentImage)
+            Toast.makeText(context, currentImage.imageName,Toast.LENGTH_LONG).show()
         }
 
     }
@@ -46,4 +56,7 @@ class ImageListAdapter(private val context: Context , private val imagesList : A
     }
 
 
+
+
 }
+

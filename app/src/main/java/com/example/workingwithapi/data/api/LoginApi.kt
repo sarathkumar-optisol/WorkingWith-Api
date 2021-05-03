@@ -20,6 +20,9 @@ interface LoginApi {
     @GET("users/2")
     suspend fun getUserProfile() : Response<UserProfile>
 
+    @GET("users/2")
+    suspend fun expUserProfile() : Response<JsonResp>
+
 
 }
 
